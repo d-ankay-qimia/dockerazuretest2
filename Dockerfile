@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["DockerAzureTest2/DockerAzureTest2.csproj", "DockerAzureTest2/"]
-RUN dotnet restore "DockerAzureTest2/DockerAzureTest2.csproj"
+COPY ["dockerazuretest2/dockerazuretest2.csproj", "dockerazuretest2/"]
+RUN dotnet restore "dockerazuretest2/dockerazuretest2.csproj"
 COPY . .
-WORKDIR "/src/DockerAzureTest2"
-RUN dotnet build "DockerAzureTest2.csproj" -c Release -o /app/build
+WORKDIR "/src/dockerazuretest2"
+RUN dotnet build "dockerazuretest2.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "DockerAzureTest2.csproj" -c Release -o /app/publish
+RUN dotnet publish "dockerazuretest2.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "DockerAzureTest2.dll"]
+ENTRYPOINT ["dotnet", "dockerazuretest2.dll"]
